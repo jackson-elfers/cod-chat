@@ -5,7 +5,7 @@ import { Route, Link, BrowserRouter as Router, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./redux";
 import "./styles";
-import { Home, Conference, QA } from "./pages";
+import { Home, Conference, QA, NotFound } from "./pages";
 import { Status, Scroll, SetUser, Notice } from "./components";
 import { routes } from "./config";
 import * as serviceWorker from "./serviceWorker";
@@ -13,12 +13,11 @@ import * as serviceWorker from "./serviceWorker";
 const routing = (
   <Provider store={store}>
     <Router>
-      <SetUser />
       <Scroll>
         <Notice>
           <Switch>
             <Route exact path={routes.Home} component={Home} />
-            <Route exact path={`${routes.Conference}/:conference_id`} component={Conference} />
+            <Route exact path={`${routes.Conference}/:conference_id/:user_id`} component={Conference} />
             <Route exact path={`${routes.QA}/:conference_id/:user_id`} component={QA} />
             <Route component={NotFound} />
           </Switch>
