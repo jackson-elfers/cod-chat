@@ -23,7 +23,7 @@ module.exports = class {
 
   async question(data) {
     this.method.check.assert(this.method.check.object(data), "expected object as first argument");
-    // { conference_id: "" }
+    // { conference_id: "", user_id: "", message: "" }
     this.method.io.emit(
       `${this.method.config.routes.Conference}/question/${data.conference_id}`,
       this.method.utils.api.send(data)
