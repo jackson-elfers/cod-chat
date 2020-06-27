@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { routes } from "../../config";
+import { connect } from "../../redux";
 import io from "socket.io-client";
 const socket = io();
 
@@ -11,13 +12,25 @@ function Messages(props) {
       <div key={props.data[i].message} className="box">
         <p>{props.data[i].user_id}</p>
         <p>{props.data[i].message}</p>
-        <button
-          onClick={function() {
-            props.handlers[0](props.data[i].user_id);
-          }}
-        >
+        <button data-index={i} onClick={props.handlers[0]}>
           Private Invite
         </button>
+      </div>
+    );
+  }
+  return temp;
+}
+
+function Invites(props) {
+  var temp = [];
+  for (var i = props.data.length - 1; i >= 0; --i) {
+    temp.push(
+      <div key={props.data[i].new_conference_id}>
+        <Link target="_blank" to={`${routes.Conference}/${props.data[i].new_conference_id}/${props.data[i].user_id}`}>
+          <div className="box">
+            <p>{`Private Conference Invite: ${props.data[i].new_conference_id}`}</p>
+          </div>
+        </Link>
       </div>
     );
   }
@@ -28,16 +41,18 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: []
+      messages: [],
+      invites: []
     };
   }
 
-  sendPrivateInvite(user_id) {
+  sendPrivateInvite(e) {
+    const index = Number(e.target.getAttribute("data-index"));
     try {
       socket.emit(`${routes.Conference}/invite`, {
         conference_id: this.props.match.params.conference_id,
-        user_id: user_id,
-        private_chat_id: this.props.match.params.user_id
+        user_id: this.state.messages[index].user_id,
+        new_conference_id: this.props.match.params.user_id
       });
     } catch (e) {
       this.props.actions.notice.message(e.message);
@@ -60,6 +75,20 @@ class Main extends React.Component {
     }
   }
 
+  receivePrivateInvite(data) {
+    try {
+      if (data.error) {
+        throw new Error(data.error);
+      }
+      var updateInvites = JSON.parse(JSON.stringify(this.state.invites));
+      updateInvites.push(data.data);
+      console.log(updateInvites);
+      this.setState({ invites: updateInvites });
+    } catch (e) {
+      this.props.actions.notice.message(e.message);
+    }
+  }
+
   receiveMessage(data) {
     try {
       if (data.error) {
@@ -75,6 +104,10 @@ class Main extends React.Component {
 
   websockets() {
     socket.on(`${routes.Conference}/message/${this.props.match.params.conference_id}`, this.receiveMessage.bind(this));
+    socket.on(
+      `${routes.Conference}/invite/${this.props.match.params.conference_id}/${this.props.match.params.user_id}`,
+      this.receivePrivateInvite.bind(this)
+    );
   }
 
   componentDidMount() {
@@ -86,6 +119,9 @@ class Main extends React.Component {
       <div>
         <h1>Conference</h1>
         <hr />
+
+        <Invites data={this.state.invites} />
+
         <Link
           target="_blank"
           to={`${routes.QA}/${this.props.match.params.conference_id}/${this.props.match.params.user_id}`}
@@ -109,9 +145,9 @@ class Main extends React.Component {
           <textarea name="body" placeholder="Post a Comment" />
           <input type="submit" value="Comment" />
         </form>
-        <Messages data={this.state.messages} />
+        <Messages data={this.state.messages} handlers={[this.sendPrivateInvite.bind(this)]} />
       </div>
     );
   }
 }
-export default Main;
+export default connect(Main);
