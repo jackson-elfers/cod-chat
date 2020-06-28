@@ -25,6 +25,22 @@ class Main extends React.Component {
     };
   }
 
+  sendMessage(e) {
+    e.preventDefault();
+    const form = document.getElementById("formOne");
+    const data = {
+      chat_id: this.props.match.params.chat_id,
+      user_id: this.props.match.params.user_id,
+      message: form.body.value
+    };
+    try {
+      socket.emit(`${routes.Conference}/message`, data);
+      form.body.value = "";
+    } catch (e) {
+      this.props.actions.notice.message(e.message);
+    }
+  }
+
   receiveMessage(data) {
     try {
       if (data.error) {
@@ -39,7 +55,7 @@ class Main extends React.Component {
   }
 
   websockets() {
-    socket.on(`${routes.Conference}/question/${this.props.match.params.chat_id}`, this.receiveMessage.bind(this));
+    socket.on(`${routes.Conference}/message/${this.props.match.params.chat_id}`, this.receiveMessage.bind(this));
   }
 
   componentDidMount() {
@@ -49,8 +65,13 @@ class Main extends React.Component {
   render() {
     return (
       <div>
-        <h1>QA</h1>
+        <h1>Private Chat</h1>
         <hr />
+
+        <form id="formOne" onSubmit={this.sendMessage.bind(this)}>
+          <textarea name="body" placeholder="Post a Comment" />
+          <input type="submit" value="Comment" />
+        </form>
         <Messages data={this.state.messages} />
       </div>
     );

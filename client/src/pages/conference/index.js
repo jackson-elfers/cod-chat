@@ -2,8 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { routes } from "../../config";
 import { connect } from "../../redux";
-import io from "socket.io-client";
-const socket = io();
+import { socket } from "../../utils";
 
 function Messages(props) {
   var temp = [];
@@ -25,10 +24,10 @@ function Invites(props) {
   var temp = [];
   for (var i = props.data.length - 1; i >= 0; --i) {
     temp.push(
-      <div key={props.data[i].new_conference_id}>
-        <Link target="_blank" to={`${routes.Conference}/${props.data[i].new_conference_id}/${props.data[i].user_id}`}>
+      <div key={props.data[i].new_chat_id}>
+        <Link target="_blank" to={`${routes.PrivateChat}/${props.data[i].new_chat_id}/${props.data[i].user_id}`}>
           <div className="box">
-            <p>{`Private Conference Invite: ${props.data[i].new_conference_id}`}</p>
+            <p>{`Private Chat Invite: ${props.data[i].new_chat_id}`}</p>
           </div>
         </Link>
       </div>
@@ -50,9 +49,9 @@ class Main extends React.Component {
     const index = Number(e.target.getAttribute("data-index"));
     try {
       socket.emit(`${routes.Conference}/invite`, {
-        conference_id: this.props.match.params.conference_id,
+        chat_id: this.props.match.params.chat_id,
         user_id: this.state.messages[index].user_id,
-        new_conference_id: this.props.match.params.user_id
+        new_chat_id: this.props.match.params.user_id
       });
     } catch (e) {
       this.props.actions.notice.message(e.message);
@@ -63,12 +62,28 @@ class Main extends React.Component {
     e.preventDefault();
     const form = document.getElementById("formOne");
     const data = {
-      conference_id: this.props.match.params.conference_id,
+      chat_id: this.props.match.params.chat_id,
       user_id: this.props.match.params.user_id,
       message: form.body.value
     };
     try {
       socket.emit(`${routes.Conference}/message`, data);
+      form.body.value = "";
+    } catch (e) {
+      this.props.actions.notice.message(e.message);
+    }
+  }
+
+  sendQuestion(e) {
+    e.preventDefault();
+    const form = document.getElementById("formTwo");
+    const data = {
+      chat_id: this.props.match.params.chat_id,
+      user_id: this.props.match.params.user_id,
+      message: form.body.value
+    };
+    try {
+      socket.emit(`${routes.Conference}/question`, data);
       form.body.value = "";
     } catch (e) {
       this.props.actions.notice.message(e.message);
@@ -103,9 +118,9 @@ class Main extends React.Component {
   }
 
   websockets() {
-    socket.on(`${routes.Conference}/message/${this.props.match.params.conference_id}`, this.receiveMessage.bind(this));
+    socket.on(`${routes.Conference}/message/${this.props.match.params.chat_id}`, this.receiveMessage.bind(this));
     socket.on(
-      `${routes.Conference}/invite/${this.props.match.params.conference_id}/${this.props.match.params.user_id}`,
+      `${routes.Conference}/invite/${this.props.match.params.chat_id}/${this.props.match.params.user_id}`,
       this.receivePrivateInvite.bind(this)
     );
   }
@@ -117,26 +132,23 @@ class Main extends React.Component {
   render() {
     return (
       <div>
-        <h1>Conference</h1>
+        <h1>Conference Chat</h1>
         <hr />
 
         <Invites data={this.state.invites} />
 
-        <Link
-          target="_blank"
-          to={`${routes.QA}/${this.props.match.params.conference_id}/${this.props.match.params.user_id}`}
-        >
+        <Link target="_blank" to={`${routes.QA}/${this.props.match.params.chat_id}`}>
           <button>Speaker Questions</button>
         </Link>
 
         <Link
           target="_blank"
-          to={`${routes.Conference}/${this.props.match.params.user_id}/${this.props.match.params.user_id}`}
+          to={`${routes.PrivateChat}/${this.props.match.params.user_id}/${this.props.match.params.user_id}`}
         >
           <button>Private Chat</button>
         </Link>
 
-        <form id="formTwo" onSubmit={this.sendMessage.bind(this)}>
+        <form id="formTwo" onSubmit={this.sendQuestion.bind(this)}>
           <textarea name="body" placeholder="Ask a Question" />
           <input type="submit" value="Question" />
         </form>
