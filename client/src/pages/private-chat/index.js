@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { routes } from "../../config";
+import { routes, api } from "../../config";
 import { connect } from "../../redux";
 import { socket } from "../../utils";
 
@@ -34,7 +34,7 @@ class Main extends React.Component {
       message: form.body.value
     };
     try {
-      socket.emit(`${routes.Conference}/message`, data);
+      socket.emit(api.conference.message, data);
       form.body.value = "";
     } catch (e) {
       this.props.actions.notice.message(e.message);
@@ -55,7 +55,7 @@ class Main extends React.Component {
   }
 
   websockets() {
-    socket.on(`${routes.Conference}/message/${this.props.match.params.chat_id}`, this.receiveMessage.bind(this));
+    socket.on(`${api.conference.message}/${this.props.match.params.chat_id}`, this.receiveMessage.bind(this));
   }
 
   componentDidMount() {

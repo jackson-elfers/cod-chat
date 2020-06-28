@@ -7,7 +7,7 @@ module.exports = class {
     this.method.check.assert(this.method.check.object(data), "expected object as first argument");
     // { chat_id: "", user_id: "", message: "" }
     this.method.io.emit(
-      `${this.method.config.routes.Conference}/message/${data.chat_id}`,
+      `${this.method.config.api.conference.message}/${data.chat_id}`,
       this.method.utils.api.send(data)
     );
   }
@@ -16,7 +16,7 @@ module.exports = class {
     this.method.check.assert(this.method.check.object(data), "expected object as first argument");
     // { chat_id: "", user_id: "", new_chat_id: "" }
     this.method.io.emit(
-      `${this.method.config.routes.Conference}/invite/${data.chat_id}/${data.user_id}`,
+      `${this.method.config.api.conference.invite}/${data.chat_id}/${data.user_id}`,
       this.method.utils.api.send(data)
     );
   }
@@ -25,7 +25,7 @@ module.exports = class {
     this.method.check.assert(this.method.check.object(data), "expected object as first argument");
     // { chat_id: "", user_id: "", message: "" }
     this.method.io.emit(
-      `${this.method.config.routes.Conference}/question/${data.chat_id}`,
+      `${this.method.config.api.conference.question}/${data.chat_id}`,
       this.method.utils.api.send(data)
     );
   }

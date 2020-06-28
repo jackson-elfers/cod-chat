@@ -17,34 +17,34 @@ module.exports = function(server) {
     const method = { socket: socket, config: config, check: check, io: io, utils: utils };
     const conference = new Conference({ method: method });
 
-    socket.on(`${config.routes.Conference}/message`, async data => {
+    socket.on(config.api.conference.message, async data => {
       try {
         await conference.message(data);
       } catch (e) {
         io.emit(
-          `${this.method.config.routes.Conference}/message/${data.conference}`,
+          `${config.api.conference.message}/${data.chat_id}`,
           utils.api.error({ status: 500, detail: config.messages.serverError })
         );
       }
     });
 
-    socket.on(`${config.routes.Conference}/invite`, async data => {
+    socket.on(config.api.conference.invite, async data => {
       try {
         await conference.invite(data);
       } catch (e) {
         io.emit(
-          `${this.method.config.routes.Conference}/invite/${data.conference}/${data.user_id}`,
+          `${config.api.conference.invite}/${data.chat_id}/${data.user_id}`,
           utils.api.error({ status: 500, detail: config.messages.serverError })
         );
       }
     });
 
-    socket.on(`${config.routes.Conference}/question`, async data => {
+    socket.on(config.api.conference.question, async data => {
       try {
         await conference.question(data);
       } catch (e) {
         io.emit(
-          `${this.method.config.routes.Conference}/question/${data.conference}/${data.user_id}`,
+          `${config.api.conference.question}/${data.chat_id}/${data.user_id}`,
           utils.api.error({ status: 500, detail: config.messages.serverError })
         );
       }
