@@ -3,21 +3,21 @@ module.exports = class {
     this.method = props.method;
   }
 
-  async resolvedOrSilenced(data) {
+  async message(data) {
     this.method.check.assert(this.method.check.object(data), "expected object as first argument");
-    const template = { _id: "string", owner_id: "string" };
+    const template = { chat_id: "string", user_id: "string", message: "string" };
     this.method.utils.checktypes({ template: template, params: data });
   }
 
-  async notifyIssuer(data) {
+  async invite(data) {
     this.method.check.assert(this.method.check.object(data), "expected object as first argument");
-    const template = { _id: "string", owner_id: "string", link: "string", body: "string" };
+    const template = { chat_id: "string", user_id: "string", new_chat_id: "string" };
     this.method.utils.checktypes({ template: template, params: data });
   }
 
-  async notifyCommentors(data) {
+  async question(data) {
     this.method.check.assert(this.method.check.object(data), "expected object as first argument");
-    const template = { parent_id: "string", owner_id: "string", link: "string", body: "string" };
+    const template = { chat_id: "string", user_id: "string", message: "string" };
     this.method.utils.checktypes({ template: template, params: data });
   }
 };

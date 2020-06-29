@@ -1,3 +1,3 @@
 module.exports = {
-  serverError: "A server error occured..."
+  serverError: "Please check api documentation for proper usage."
 };

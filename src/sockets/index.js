@@ -1,10 +1,10 @@
-const Conference = require("./conference");
-
+const Conference = require("./conference.socket");
 const socketio = require("socket.io");
 const redis = require("socket.io-redis");
 const check = require("check-types");
 const config = require("../config");
 const utils = require("../utils");
+const errors = require("../errors/sockets");
 
 module.exports = function(server) {
   const io = socketio(server);
@@ -14,7 +14,7 @@ module.exports = function(server) {
   }
 
   io.on("connection", socket => {
-    const method = { socket: socket, config: config, check: check, io: io, utils: utils };
+    const method = { socket: socket, config: config, check: check, io: io, utils: utils, errors: errors };
     const conference = new Conference({ method: method });
 
     socket.on(config.api.conference.message, async data => {
