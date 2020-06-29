@@ -27,6 +27,13 @@ I've built type/parameter checking into the backend that will dynamically throw 
 required. For security reasons I don't pass server errors back to the client and so for more detailed
 error messages you'll have to run the server locally.
 
+## cross domain sockets
+
+```
+import io from "socket.io-client";
+const socket = io("https://codchat.herokuapp.com"); // You can use this url for development :)
+```
+
 ## environment variables
 
 Make a folder on the project root called env (mkdir env) and inside a file called dev.env (vim dev.env) below is

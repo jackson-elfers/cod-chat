@@ -33,6 +33,11 @@ class Main extends React.Component {
             types. It's NOT a visual representation of the final integration which will be stage two of the project.
             This is for code reference and functionality testing only.
           </p>
+
+          <p>
+            I'm passing parameters through the url in this example because it's stateless. Obviously you'll be using
+            redux (or something else) to maintain client state so you'll have a different design consideration.
+          </p>
         </div>
       </div>
     );
