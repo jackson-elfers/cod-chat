@@ -21,6 +21,7 @@ module.exports = function(server) {
       try {
         await conference.message(data);
       } catch (e) {
+        console.log(e);
         io.emit(
           `${config.api.conference.message}/${data.chat_id}`,
           utils.api.error({ status: 500, detail: config.messages.serverError })
@@ -32,6 +33,7 @@ module.exports = function(server) {
       try {
         await conference.invite(data);
       } catch (e) {
+        console.log(e);
         io.emit(
           `${config.api.conference.invite}/${data.chat_id}/${data.user_id}`,
           utils.api.error({ status: 500, detail: config.messages.serverError })
@@ -43,6 +45,7 @@ module.exports = function(server) {
       try {
         await conference.question(data);
       } catch (e) {
+        console.log(e);
         io.emit(
           `${config.api.conference.question}/${data.chat_id}/${data.user_id}`,
           utils.api.error({ status: 500, detail: config.messages.serverError })

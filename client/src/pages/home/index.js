@@ -24,6 +24,16 @@ class Main extends React.Component {
           <input type="text" name="user_id" placeholder="Attendee Name" />
           <input type="submit" value="Create Conference" />
         </form>
+
+        <div className="box">
+          <p>Developer Notes:</p>
+
+          <p>
+            This is a functional example of stateless sockets fulfilling three roles of public/private/question chat
+            types. It's NOT a visual representation of the final integration which will be stage two of the project.
+            This is for code reference and functionality testing only.
+          </p>
+        </div>
       </div>
     );
   }
