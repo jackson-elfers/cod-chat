@@ -14,8 +14,12 @@ socket.emit(`/api/conference/question`, data); // data: { chat_id: "string", use
 // event listeners
 socket.on(`/api/conference/message/${"chat_id"}`, receiveMessageCallback);
 socket.on(`/api/conference/invite/${"chat_id"}/${"user_id"}`, receivePrivateInviteCallback);
-socket.on(`/api/conference/question/${"chat_id"}`, receiveMessageCallback);
+socket.on(`/api/conference/question/${"chat_id"}`, receiveQuestionCallback);
 ```
+
+## listener callback data
+
+Listener callback data will be returned in the form: { error: null, data: {} }
 
 ## error handling
 
