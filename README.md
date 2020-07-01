@@ -21,23 +21,17 @@ socket.on(`/api/conference/question/${"chat_id"}`, receiveQuestionCallback);
 
 Listener callback data will be returned in the form: { error: null, data: {} }
 
-## error handling
+## development install/run
 
-I've built type/parameter checking into the backend that will dynamically throw errors when
-required. For security reasons I don't pass server errors back to the client and so for more detailed
-error messages you'll have to run the server locally.
-
-## cross domain sockets
+### clone and install
 
 ```
-import io from "socket.io-client";
-const socket = io("https://codchat.herokuapp.com"); // You can use this url for development :)
+git clone https://github.com/jackson-elfers/cod-chat.git
+cd cod-chat
+npm install && cd client && npm install && cd ..
 ```
 
-## environment variables
-
-Make a folder on the project root called env (mkdir env) and inside a file called dev.env (vim dev.env) below is
-what it should contain:
+### create .env file on the project's root
 
 ```
 PORT=5000
@@ -47,30 +41,36 @@ REDIS_HOST=
 REDIS_PORT=
 ```
 
-Then run the following command to set it on project root:
+### run development server
 
 ```
-npm run dev.env
-```
-
-## development install/run
-
-```
-git clone https://github.com/jackson-elfers/cod-chat.git
-cd cod-chat
-npm install && cd client && npm install && cd ..
 npm run dev
 ```
 
 ## deployment to heroku
 
+You'll have to create a heroku account and download the cli tool and then type the following.
+
 ```
 heroku login
-heroku create codechat
+heroku create cod-chat
 git add .
 git commit -m "init: commit"
 git push heroku master
 ```
+
+## cross domain sockets
+
+```
+import io from "socket.io-client";
+const socket = io("https://codchat.herokuapp.com"); // You can use this url for development :)
+```
+
+## error handling
+
+I've built type/parameter checking into the backend that will dynamically throw errors when
+required. For security reasons I don't pass server errors back to the client and so for more detailed
+error messages you'll have to run the server locally.
 
 ## about redis and scaling
 
