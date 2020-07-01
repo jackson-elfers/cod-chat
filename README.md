@@ -31,7 +31,7 @@ cd cod-chat
 npm install && cd client && npm install && cd ..
 ```
 
-### create .env file on the project's root
+### create a file called .env on the project's root
 
 ```
 PORT=5000
