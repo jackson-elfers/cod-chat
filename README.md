@@ -8,7 +8,7 @@ const socket = io(); // Import this as a global instance eg. see client utils fo
 
 // event emitters
 socket.emit(`/api/conference/message`, data); // data: { chat_id: "number", user_id: "number", user_name: "string", message: "string" }
-socket.emit(`/api/conference/invite`, data); // data: { chat_id: "number", user_id: "number", user_name: "string", message: "string" }
+socket.emit(`/api/conference/invite`, data); // data: { chat_id: "number", user_id: "number", user_name: "string" }
 socket.emit(`/api/conference/question`, data); // data: { chat_id: "number", user_id: "number", user_name: "string", message: "string" }
 
 // event listeners
