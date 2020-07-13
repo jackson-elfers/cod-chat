@@ -7,9 +7,9 @@ import io from "socket.io-client";
 const socket = io(); // Import this as a global instance eg. see client utils folder
 
 // event emitters
-socket.emit(`/api/conference/message`, data); // data: { chat_id: "string", user_id: "string", message: "string" }
-socket.emit(`/api/conference/invite`, data); // data: { chat_id: "string", user_id: "string", new_chat_id: "string" }
-socket.emit(`/api/conference/question`, data); // data: { chat_id: "string", user_id: "string", message: "string" }
+socket.emit(`/api/conference/message`, data); // data: { chat_id: "number", user_id: "number", user_name: "string", message: "string" }
+socket.emit(`/api/conference/invite`, data); // data: { chat_id: "number", user_id: "number", user_name: "string", message: "string" }
+socket.emit(`/api/conference/question`, data); // data: { chat_id: "number", user_id: "number", user_name: "string", message: "string" }
 
 // event listeners
 socket.on(`/api/conference/message/${"chat_id"}`, receiveMessageCallback);
