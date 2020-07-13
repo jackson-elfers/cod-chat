@@ -24,7 +24,7 @@ module.exports = function(server) {
         console.log(e);
         io.emit(
           `${config.api.conference.message}/${data.chat_id}`,
-          utils.api.error({ status: 500, detail: config.messages.serverError })
+          utils.api.error({ status: 500, detail: e.message })
         );
       }
     });
@@ -36,7 +36,7 @@ module.exports = function(server) {
         console.log(e);
         io.emit(
           `${config.api.conference.invite}/${data.chat_id}/${data.user_id}`,
-          utils.api.error({ status: 500, detail: config.messages.serverError })
+          utils.api.error({ status: 500, detail: e.message })
         );
       }
     });
@@ -48,7 +48,7 @@ module.exports = function(server) {
         console.log(e);
         io.emit(
           `${config.api.conference.question}/${data.chat_id}/${data.user_id}`,
-          utils.api.error({ status: 500, detail: config.messages.serverError })
+          utils.api.error({ status: 500, detail: e.message })
         );
       }
     });
