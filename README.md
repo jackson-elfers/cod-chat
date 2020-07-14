@@ -7,9 +7,9 @@ import io from "socket.io-client";
 const socket = io(); // Import this as a global instance eg. see client utils folder
 
 // event emitters
-socket.emit(`/api/conference/message`, data); // data: { chat_id: "number", user_id: "number", user_name: "string", message: "string" }
-socket.emit(`/api/conference/invite`, data); // data: { chat_id: "number", user_id: "number", user_name: "string" }
-socket.emit(`/api/conference/question`, data); // data: { chat_id: "number", user_id: "number", user_name: "string", message: "string" }
+socket.emit(`/api/conference/message`, data); // data: { chat_id: "number" }
+socket.emit(`/api/conference/invite`, data); // data: { chat_id: "number", user_id: "number" }
+socket.emit(`/api/conference/question`, data); // data: { chat_id: "number" }
 
 // event listeners
 socket.on(`/api/conference/message/${"chat_id"}`, receiveMessageCallback);
@@ -65,12 +65,6 @@ git push heroku master
 import io from "socket.io-client";
 const socket = io("https://codchat.herokuapp.com"); // You can use this url for development :)
 ```
-
-## error handling
-
-I've built type/parameter checking into the backend that will dynamically throw errors when
-required. For security reasons I don't pass server errors back to the client and so for more detailed
-error messages you'll have to run the server locally.
 
 ## about redis and scaling
 
