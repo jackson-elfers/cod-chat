@@ -52,5 +52,17 @@ module.exports = function(server) {
         );
       }
     });
+
+    socket.on(config.api.conference.answer, async data => {
+      try {
+        await conference.answer(data);
+      } catch (e) {
+        console.log(e);
+        io.emit(
+          `${config.api.conference.answer}/${data.chat_id}/${data.user_id}`,
+          utils.api.error({ status: 500, detail: e.message })
+        );
+      }
+    });
   });
 };

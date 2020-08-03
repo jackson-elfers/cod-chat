@@ -20,6 +20,18 @@ function Messages(props) {
   return temp;
 }
 
+function Answers(props) {
+  var temp = [];
+  for (var i = props.data.length - 1; i >= 0; --i) {
+    temp.push(
+      <div key={props.data[i].message} className="box">
+        <p>{props.data[i].message}</p>
+      </div>
+    );
+  }
+  return temp;
+}
+
 function Invites(props) {
   var temp = [];
   for (var i = props.data.length - 1; i >= 0; --i) {
@@ -41,6 +53,7 @@ class Main extends React.Component {
     super(props);
     this.state = {
       messages: [],
+      answers: [],
       invites: []
     };
   }
@@ -104,6 +117,20 @@ class Main extends React.Component {
     }
   }
 
+  receiveAnswer(data) {
+    try {
+      if (data.error) {
+        throw new Error(data.error);
+      }
+      var updateAnswers = JSON.parse(JSON.stringify(this.state.answers));
+      updateAnswers.push(data.data);
+      console.log(updateAnswers);
+      this.setState({ answers: updateAnswers });
+    } catch (e) {
+      this.props.actions.notice.message(e.message);
+    }
+  }
+
   receiveMessage(data) {
     try {
       if (data.error) {
@@ -122,6 +149,10 @@ class Main extends React.Component {
     socket.on(
       `${api.conference.invite}/${this.props.match.params.chat_id}/${this.props.match.params.user_id}`,
       this.receivePrivateInvite.bind(this)
+    );
+    socket.on(
+      `${api.conference.answer}/${this.props.match.params.chat_id}/${this.props.match.params.user_id}`,
+      this.receiveAnswer.bind(this)
     );
   }
 
@@ -147,6 +178,12 @@ class Main extends React.Component {
         >
           <button>Private Chat</button>
         </Link>
+
+        <div style={{ overflow: "auto", height: "150px" }} className="box">
+          <p>Answers</p>
+          <hr />
+          <Answers data={this.state.answers} />
+        </div>
 
         <form id="formTwo" onSubmit={this.sendQuestion.bind(this)}>
           <textarea name="body" placeholder="Ask a Question" />

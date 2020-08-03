@@ -29,4 +29,13 @@ module.exports = class {
       this.method.utils.api.send(data)
     );
   }
+
+  async answer(data) {
+    this.method.check.assert(this.method.check.object(data), "expected object as first argument");
+    //await this.method.errors.conference.answer(data);
+    this.method.io.emit(
+      `${this.method.config.api.conference.answer}/${data.chat_id.toString()}/${data.user_id.toString()}`,
+      this.method.utils.api.send(data)
+    );
+  }
 };
