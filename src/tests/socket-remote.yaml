@@ -4,11 +4,11 @@ config:
     transports: ["websocket"]
   phases:
     - duration: 10 # Run scenario for 10 seconds
-      arrivalCount: 500 # Create 20 virtual users per scenario
+      arrivalCount: 1500 # Create 20 virtual users per scenario
 scenarios:
   - engine: "socketio"
     flow:
       - emit:
           channel: "/api/conference/message"
-          data: { chat_id: 'socket_test', user_id: 'socket_user', message: 'socket_test' }
+          data: { chat_id: "socket_test", user_id: "socket_user", message: "{{$randomString()}}" }
       - think: 5 # do nothing for 5 seconds, then disconnect

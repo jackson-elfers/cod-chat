@@ -68,13 +68,17 @@ import io from "socket.io-client";
 const socket = io("https://codchat.herokuapp.com"); // You can use this url for development :)
 ```
 
-## about redis and scaling
+## vertical scaling with heroku
+
+[https://devcenter.heroku.com/articles/dyno-types](https://devcenter.heroku.com/articles/dyno-types)
+
+## about redis and horizontal scaling
 
 For development purposes one instance will suffice but scaling sockets requires a dedicated database that
 keeps track of our sockets accross multiple servers behind a load balancer. You'll have to sign up for a
 redis database and fill in the host and port and set redis to "true".
 
-## scaling with heroku and redis
+## horizontal scaling with heroku and redis
 
 ### 1) create an account with redislabs and retrieve host and port
 
