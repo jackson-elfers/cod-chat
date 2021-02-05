@@ -76,11 +76,11 @@ redis database and fill in the host and port and set redis to "true".
 
 ## scaling with heroku and redis
 
-### create an account with redislabs and retrieve host and port
+### 1) create an account with redislabs and retrieve host and port
 
 [https://redislabs.com/](https://redislabs.com/)
 
-### update your environment variable on heroku with the following
+### 2) update your environment variables on heroku with the following
 
 ```
 PORT=5000
@@ -90,7 +90,7 @@ REDIS_HOST=redislabhost
 REDIS_PORT=redislabport
 ```
 
-### scale the heroku instance on the browser interface
+### 3) scale the heroku instance on the browser interface
 
 [https://devcenter.heroku.com/articles/scaling](https://devcenter.heroku.com/articles/scaling)
 
